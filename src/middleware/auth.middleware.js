@@ -1,0 +1,34 @@
+import jwt from "jsonwebtoken";
+import User from "../models/user.model.js";
+
+export const protectRoute = async (req, res, next) => {
+  try {
+    const token = req.cookies.jwt;
+
+    if (!token) {
+      return res.status(401).json({ message: "Não autorizado - Sem token" });
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      const message =
+        err.name === "TokenExpiredError"
+          ? "Não autorizado - Token expirado"
+          : "Não autorizado - Token inválido";
+      return res.status(401).json({ message });
+    }
+
+    const user = await User.findById(decoded.userId).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "Usuário não encontrado" });
+    }
+
+    req.user = user;
+    next();
+  } catch (error) {
+    console.error("Erro no middleware protectRoute:", error.message);
+    res.status(500).json({ message: "Erro de servidor" });
+  }
+};
