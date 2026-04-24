@@ -5,7 +5,7 @@ Aplicação de chat em tempo real com autenticação, troca de mensagens instant
 Projeto desenvolvido para aprofundar conhecimentos em arquitectura de APIs REST, comunicação bidirecional com WebSockets e boas práticas de segurança em Node.js.
 
 → **Frontend:** [github.com/IsaiasMuanda/chattr-frontend](https://github.com/IsaiasMuanda)  
-→ **Demo:** [chattr.vercel.app](#)
+→ **Demo:** https://chattr-frontend-three.vercel.app/
 
 ---
 
