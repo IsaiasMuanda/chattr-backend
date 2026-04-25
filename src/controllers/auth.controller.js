@@ -72,7 +72,12 @@ export const login = async (req, res) => {
 
 export const logout = (_req, res) => {
   try {
-    res.cookie("jwt", "", { maxAge: 0, httpOnly: true });
+    res.cookie("jwt", "", {
+      maxAge: 0,
+      httpOnly: true,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      secure: process.env.NODE_ENV === "production",
+    });
     return res.status(200).json({ message: "Logout realizado com sucesso" });
   } catch (error) {
     console.error("Erro em logout:", error.message);
@@ -139,8 +144,12 @@ export const deleteProfile = async (req, res) => {
     }
 
     await User.findByIdAndDelete(userId);
-    res.cookie("jwt", "", { maxAge: 0, httpOnly: true });
-
+    res.cookie("jwt", "", {
+      maxAge: 0,
+      httpOnly: true,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      secure: process.env.NODE_ENV === "production",
+    });
     return res.status(200).json({ message: "Conta removida com sucesso" });
   } catch (error) {
     console.error("Erro em deleteProfile:", error.message);
